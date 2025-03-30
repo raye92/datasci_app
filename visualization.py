@@ -1,11 +1,23 @@
 # visualization.py
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-class MplCanvas(FigureCanvas):
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        self.fig, self.ax = plt.subplots(figsize=(width, height), dpi=dpi)
-        super(MplCanvas, self).__init__(self.fig)
+def plot_comparison(raw_df, processed_df, column=None):
+    # choose column if not specified
+    if column is None:
+        numeric_cols = raw_df.select_dtypes(include=[float, int]).columns.tolist()
+        if not numeric_cols:
+            raise ValueError("no numeric columns available for plotting.")
+        column = numeric_cols[0]
+
+    # plot raw and filtered data
+    plt.figure(figsize=(12, 6))
+    plt.plot(raw_df[column], label='raw data', alpha=0.5)
+    plt.plot(processed_df[column], label='filtered data', alpha=0.5)
+    plt.title(f"comparison of raw and filtered data ({column})")
+    plt.xlabel("sample index")
+    plt.ylabel("value")
+    plt.legend()
+    plt.show()
 
 def plot_acceleration_on_canvas(canvas, data, title="Accelerometer Data"):
     # Clear previous plots

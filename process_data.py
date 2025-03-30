@@ -29,10 +29,10 @@ def preprocess_data(df, hdf5_file, member_name):
         filtered_data[col] = filtered_data[col].rolling(window=window_size, min_periods=1).mean()
 
     # save datasets to hdf5
-    with pd.HDFStore(hdf5_file, mode='w') as store:
-        store.put(f'rawdata_{member_name}', raw_data)
-        store.put(f'filtered_{member_name}', filtered_data)
-    print(f"data saved to {hdf5_file} with keys 'rawdata_{member_name}' and 'filtered_{member_name}'.")
+    with pd.HDFStore(hdf5_file, mode='a') as store:
+        store.put(f'/raw/{member_name}', raw_data, format='table')
+        store.put(f'/processed/{member_name}', filtered_data, format='table')
+    print(f"data saved to {hdf5_file} with keys '/raw/{member_name}' and '/processed/{member_name}'.")
 
     return raw_data, filtered_data
 
@@ -55,22 +55,24 @@ def plot_comparison(raw_df, processed_df, column=None):
     plt.show()
 
 if __name__ == '__main__':
-    # file paths
-    walking_file = 'RayWalking.csv'
-    jumping_file = 'RayJumping.csv'
-
-    # load and label files
-    walking_df = load_and_label(walking_file, activity_label=0)
-    jumping_df = load_and_label(jumping_file, activity_label=1)
-
-    # combine dataframes
-    combined_df = pd.concat([walking_df, jumping_df], ignore_index=True)
-
-
-    # process combined csv and save to hdf5
+    # list of members
+    members = ["ray", "jack", "vikran"]
     hdf5_file = 'data.h5'
-    member_name = 'ray'
-    raw_data, filtered_data = preprocess_data(combined_df, hdf5_file, member_name)
 
-    # plot comparison for 'accel_x'
-    plot_comparison(raw_data, filtered_data, "accel_x")
+    for member in members:
+        # file paths
+        walking_file = f'{member.capitalize()}Walking.csv'
+        jumping_file = f'{member.capitalize()}Jumping.csv'
+
+        # load and label files
+        walking_df = load_and_label(walking_file, activity_label=0)
+        jumping_df = load_and_label(jumping_file, activity_label=1)
+
+        # combine dataframes
+        combined_df = pd.concat([walking_df, jumping_df], ignore_index=True)
+
+        # process combined csv and save to hdf5
+        raw_data, filtered_data = preprocess_data(combined_df, hdf5_file, member)
+
+        # plot comparison for 'accel_x'
+        plot_comparison(raw_data, filtered_data, "accel_x")
