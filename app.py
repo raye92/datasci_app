@@ -30,9 +30,9 @@ class MainWindow(QMainWindow):
         self.csv_path = QLabel("No file selected")
         layout.addWidget(self.csv_path)
 
-        # self.classify_button = QPushButton("Classify")
+        self.classify_button = QPushButton("Classify")
         # self.classify_button.clicked.connect(self.classify_data)
-        # layout.addWidget(self.classify_button)
+        layout.addWidget(self.classify_button)
 
         #matplotlib figure and canvas for visualization
         self.figure = Figure()
@@ -66,9 +66,8 @@ class MainWindow(QMainWindow):
         ax.legend()
         ax.grid(True)
 
-
         self.canvas.draw()
-
+    
 #main method
 if __name__ == "__main__":
     app = QApplication(sys.argv)
