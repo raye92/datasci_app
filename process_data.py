@@ -57,4 +57,4 @@ if __name__ == '__main__':
         raw_data, filtered_data = preprocess_data(combined_df, hdf5_file, member)
 
         # plot comparison for 'accel_x'
-        plot_comparison(raw_data, filtered_data, "abs_accel", 100)
+        plot_comparison(raw_data, filtered_data, "abs_accel")
