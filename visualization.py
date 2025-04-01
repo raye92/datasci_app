@@ -1,23 +1,35 @@
 # visualization.py
 import matplotlib.pyplot as plt
 
-def plot_comparison(raw_df, processed_df, column=None):
-    # choose column if not specified
+def plot_comparison(raw_df, processed_df, column=None, time=None):
     if column is None:
-        numeric_cols = raw_df.select_dtypes(include=[float, int]).columns.tolist()
-        if not numeric_cols:
-            raise ValueError("no numeric columns available for plotting.")
-        column = numeric_cols[0]
+        print("no column specified for plotting")
+        return
 
-    # plot raw and filtered data
     plt.figure(figsize=(12, 6))
-    plt.plot(raw_df[column], label='raw data', alpha=0.5)
-    plt.plot(processed_df[column], label='filtered data', alpha=0.5)
-    plt.title(f"comparison of raw and filtered data ({column})")
-    plt.xlabel("sample index")
-    plt.ylabel("value")
+
+    # filter by time if given
+    if time is not None:
+        raw_df = raw_df[raw_df.index <= time]
+        processed_df = processed_df[processed_df.index <= time]
+
+    # plot raw data
+    for activity in [0, 1]:
+        data = raw_df[raw_df["activity"] == activity]
+        plt.plot(data.index, data[column], label=f'raw activity {activity}', alpha=0.6)
+
+    # plot processed data
+    for activity in [0, 1]:
+        data = processed_df[processed_df["activity"] == activity]
+        plt.plot(data.index, data[column], label=f'processed activity {activity}', alpha=0.8)
+
+    plt.title(f"raw vs. processed data: {column}")
+    plt.xlabel("sample index" if time is None else "time (s)")
+    plt.ylabel(column)
     plt.legend()
+    plt.tight_layout()
     plt.show()
+
 
 def plot_acceleration_on_canvas(canvas, data, title="Accelerometer Data"):
     # Clear previous plots

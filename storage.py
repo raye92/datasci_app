@@ -24,14 +24,8 @@ def print_structure():
             print(key)
 
 if __name__ == "__main__":
-    # initialize_hdfstore()
+    initialize_hdfstore()
 
-    # df = pd.DataFrame({'col1': [1, 2, 3], 'col2': ['a', 'b', 'c']})
-    #
-    # # open the HDFStore in append mode to update the key
-    # with pd.HDFStore("data.h5", mode="a") as store:
-    #     store.put('/raw/ray', df, format='table')
-    #
     df = pd.read_hdf("data.h5", key="/raw/ray")
     print(df)
 
