@@ -30,7 +30,7 @@ def split():
     b_end = b['time'].max()
     c['time'] = c['time'] + b_end
 
-    window = 5.0  # 5 second window
+    window = 2.0  # 5 second window
 
     all = pd.concat([a, b, c], ignore_index=True)
 
@@ -79,8 +79,7 @@ def print_structure():
 if __name__ == "__main__":
     # initialize_hdfstore()
     split()
-    df = pd.read_hdf("data.h5", key="/split/train")
-    df_sorted = df.sort_values("time")
-    print(df_sorted)
+    # df = pd.read_hdf("data.h5", key="/processed/Ray")
+    # print(df.columns)
     # print(df)
     print_structure()

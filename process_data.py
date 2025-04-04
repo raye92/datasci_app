@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from visualization import plot_comparison
-window_size = 8  # window size
+window_size = 5  # window size
 
 def load_and_label(file_path, activity_label):
     # read csv
