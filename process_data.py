@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from visualization import plot_comparison
 window_size = 5  # window size
 
-def load_and_label(file_path, activity_label):
+def load_and_label(file_path, activity_label=None):
     # read csv
     df = pd.read_csv(file_path)
     # rename columns
@@ -16,7 +16,8 @@ def load_and_label(file_path, activity_label):
         "Absolute acceleration (m/s^2)": "abs_accel"
     }, inplace=True)
     # add activity column (0 walking, 1 jumping)
-    df["activity"] = activity_label
+    if activity_label:
+        df["activity"] = activity_label
     return df
 
 def preprocess_data(df, hdf5_file, member_name):
