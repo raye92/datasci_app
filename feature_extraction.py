@@ -8,6 +8,8 @@ from sklearn.linear_model import LogisticRegression
 def extract_features(df):
     features_list = []
     grouped = df.groupby('segment')
+
+
     for seg, group in grouped:
         feature_dict = {}
         feature_dict['segment'] = seg
@@ -17,6 +19,13 @@ def extract_features(df):
             feature_dict[f'{axis}_median'] = np.median(data)
             feature_dict[f'{axis}_std'] = np.std(data)
             feature_dict[f'{axis}_kurt'] = kurtosis(data, bias=False)
+            feature_dict[f'{axis}_max'] = np.max(data)
+            feature_dict[f'{axis}_min'] = np.min(data)
+            feature_dict[f'{axis}_median'] = np.median(data)
+            feature_dict[f'{axis}_var'] = np.var(data)
+            feature_dict[f'{axis}_ptp'] = np.ptp(data)
+            feature_dict[f'{axis}_kurt'] = skew(data, bias=False)
+
         if 'activity' in group.columns:
             feature_dict['activity'] = group['activity'].mode()[0]
         features_list.append(feature_dict)
@@ -48,8 +57,8 @@ if __name__ == "__main__":
     accuracy = accuracy_score(y_test, y_pred)
     print("test accuracy:", accuracy)
 
-    # add the predicted activity to the test_features DataFrame.
-    test_features['predicted_activity'] = y_pred
-
-    # export the test features (with predictions) to a CSV file.
-    test_features.to_csv("test.csv", index=False)
+    # # add the predicted activity to the test_features DataFrame.
+    # test_features['predicted_activity'] = y_pred
+    #
+    # # export the test features (with predictions) to a CSV file.
+    # test_features.to_csv("test.csv", index=False)

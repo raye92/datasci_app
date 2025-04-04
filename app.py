@@ -40,11 +40,11 @@ class MainWindow(QMainWindow):
             df = load_and_label(file_path)
 
             # segment data
-            from storage import segment_signal
+            from storage import segment_signal #jack
             segments = pd.concat(segment_signal(df))
             print("CSV loaded:\n", segments)
 
-            # extract features from segments
+            # extract features from segments #vikran
             from feature_extraction import extract_features, clf, scaler, feature_cols
             features = extract_features(segments)
 
